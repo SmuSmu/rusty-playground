@@ -1,7 +1,5 @@
 
 extern crate winreg;
-//use std::path::Path;
-//use std::io;
 use winreg::RegKey;
 use winreg::enums::*;
 
@@ -15,3 +13,4 @@ fn main() {
     let info = cur_ver.query_info().unwrap();
     println!("info = {:?}", info);
 }
+//Computer\HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Cryptography\MachineGuid
