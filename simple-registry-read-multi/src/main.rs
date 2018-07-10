@@ -20,5 +20,4 @@ fn main() {
     for name in reg_key_uninstall.enum_keys().map(|x| x.unwrap()) {
         println!("{}", name);
     }
-
 }
