@@ -1,16 +1,25 @@
 
+// http://siciarz.net/24-days-rust-winreg/
+
 extern crate winreg;
-use winreg::RegKey;
-use winreg::enums::*;
+
+use winreg::enums::{HKEY_LOCAL_MACHINE, KEY_READ};
 
 fn main() {
-    println!("Reading some system info...");
-    let hklm = RegKey::predef(HKEY_LOCAL_MACHINE);
-    let cur_ver = hklm.open_subkey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion").unwrap();
-    let pf: String = cur_ver.get_value("ProgramFilesDir").unwrap();
-    let dp: String = cur_ver.get_value("DevicePath").unwrap();
-    println!("ProgramFiles = {}\nDevicePath = {}", pf, dp);
-    let info = cur_ver.query_info().unwrap();
-    println!("info = {:?}", info);
+    let hklm = winreg::RegKey::predef(HKEY_LOCAL_MACHINE);
+    
+    // ProductName
+    let subkey = hklm.open_subkey_with_flags(r#"SOFTWARE\Microsoft\Windows NT\CurrentVersion"#, KEY_READ)
+                    .expect("Failed to open subkey");
+    let product_name: String = subkey.get_value("ProductName")
+                    .expect("Failed to read product name");
+
+    // MachineGuid
+    let subkey = hklm.open_subkey_with_flags(r#"SOFTWARE\Microsoft\Cryptography"#, KEY_READ)
+                    .expect("Failed to open subkey");
+    let machine_guid: String = subkey.get_value("MachineGuid")
+                    .expect("Failed to read product name");
+    
+    println!("Windows ProductName : {}", product_name);
+    println!("Windows MachineGuid : {}", machine_guid);
 }
-//Computer\HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Cryptography\MachineGuid
