@@ -1,4 +1,3 @@
-
 extern crate winreg;
 use winreg::RegKey;
 use winreg::enums::*;
