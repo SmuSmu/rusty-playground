@@ -22,4 +22,15 @@ fn main() {
     
     println!("Windows ProductName : {}", product_name);
     println!("Windows MachineGuid : {}", machine_guid);
+
+
+    println!("Playing with Errors");
+    if hklm.open_subkey_with_flags(r#"SOFTWARE\Microsoft\Windows NT\CurrentVersion"#, KEY_READ).is_ok()
+        {
+            println!("No Error");
+        }
+    else
+        {
+            println!("Error");
+        }
 }
