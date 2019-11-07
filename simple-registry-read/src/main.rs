@@ -3,7 +3,18 @@
 
 extern crate winreg;
 
-use winreg::enums::{HKEY_LOCAL_MACHINE, KEY_READ};
+use winreg::enums::{HKEY_LOCAL_MACHINE, KEY_READ}; 
+
+fn regreadvalue (regpath: &str, regvalue: &str) {
+    let hklm = winreg::RegKey::predef(HKEY_LOCAL_MACHINE);
+
+    let subkey = hklm.open_subkey_with_flags(regpath, KEY_READ)
+                    .expect("Failed to open subkey");
+    let thevalue: String = subkey.get_value(regvalue)
+                    .expect("Failed to read product name");
+    
+    println!("{}\\{}={}", regpath, regvalue, thevalue);
+}
 
 fn main() {
     let hklm = winreg::RegKey::predef(HKEY_LOCAL_MACHINE);
@@ -22,6 +33,8 @@ fn main() {
     
     println!("Windows ProductName : {}", product_name);
     println!("Windows MachineGuid : {}", machine_guid);
+
+    regreadvalue(r#"SOFTWARE\Microsoft\Windows NT\CurrentVersion"#, "ProductName");
 
 
     println!("Playing with Errors");
