@@ -1,6 +1,6 @@
 [package]
 name = "testdebug"
-version = "0.1.0"
+version = "0.1.1"
 authors = ["Me"]
 edition = "2018"
 
