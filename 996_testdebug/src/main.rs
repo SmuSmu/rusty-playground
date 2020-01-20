@@ -6,29 +6,21 @@ fn bytes_to_hex (input: &winreg::RegValue) -> String
 {
     let mut output: String = "".to_string();
     for x in &input.bytes {
-        output = format!("{} {}", output, format!("{:02X}", x));
+        output = format!("{} {}", output, format!("{:02x}", x));
     }
-    return output;
+    return output.trim().to_string();
 }
 
 fn main() {
-    let hklm = winreg::RegKey::predef(HKEY_LOCAL_MACHINE);
-    
+    let hkcu = winreg::RegKey::predef(HKEY_CURRENT_USER);
     // ProductName
-    let subkey = hklm.open_subkey_with_flags(r#"SOFTWARE\Microsoft\Windows Defender"#, KEY_READ)
+    let subkey = hkcu.open_subkey_with_flags(r#"System"#, KEY_READ)
                     .expect("Failed to open subkey");
-    let install_time: winreg::RegValue = subkey.get_raw_value("InstallTime")
-                    .expect("Failed to read InstallTime");
+    let test: winreg::RegValue = subkey.get_raw_value("test")
+                    .expect("Failed to read test");
     
-    let hkcu = winreg::RegKey::predef(HKEY_LOCAL_MACHINE);
-    // ProductName
-    let subkey = hklm.open_subkey_with_flags(r#"SOFTWARE\Microsoft\Windows Defender"#, KEY_READ)
-                    .expect("Failed to open subkey");
-    let install_time: winreg::RegValue = subkey.get_raw_value("InstallTime")
-                    .expect("Failed to read InstallTime");
-    
-    println!("InstallTime : {:#?}", install_time.bytes);
+    println!("TestKey : {:#?}", test.bytes);
 
-    println!("[{}]", bytes_to_hex(&install_time));
+    println!("[{}]", bytes_to_hex(&test));
 
 }
